@@ -14,12 +14,12 @@
       <tabbaritems path="/car" activeColor="blue">
         <img slot="item-img" src="~assets/img/tabbar/shopcart.svg" alt />
         <img slot="item-img-active" src="~assets/img/tabbar/shopcart_active.svg" alt />
-        <nav slot="item-text">分类</nav>
+        <nav slot="item-text">购物车</nav>
       </tabbaritems>
       <tabbaritems path="/profile" activeColor="blue">
         <img slot="item-img" src="~assets/img/tabbar/profile.svg" alt />
         <img slot="item-img-active" src="~assets/img/tabbar/profile_active.svg" alt />
-        <nav slot="item-text">分类</nav>
+        <nav slot="item-text">我的</nav>
       </tabbaritems>
     </tabbar>
   </div>
