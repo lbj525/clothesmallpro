@@ -3,11 +3,13 @@
     <navbar id="home-slot">
       <header slot="center">潮·商城</header>
     </navbar>
-    <home-swiper :banners="banners"></home-swiper>
-    <recommends-views :recommends="recommends" />
-    <fashion />
-    <tab-control class="tab-control" :titles="titles" @tabClick="tabClick" />
-    <goods-list :goods="goodsList"></goods-list>
+    <scroll class="scroll" :probeLoad="3" ref="scroll" :pullUpLoad="true" @pullingUp="loadMore">
+      <home-swiper :banners="banners"></home-swiper>
+      <recommends-views :recommends="recommends" />
+      <fashion />
+      <tab-control class="tab-control" :titles="titles" @tabClick="tabClick" />
+      <goods-list :goods="goodsList"></goods-list>
+    </scroll>
   </div>
 </template>
 
@@ -21,6 +23,7 @@ import Fashion from "./Fashion";
 import navbar from "components/common/navbar/Navbar";
 import TabControl from "components/content/TabControl";
 import GoodsList from "components/content/GoodsList";
+import Scroll from "components/common/scroll/Scroll";
 
 //网络请求
 import { getHomeData, getGoodsData } from "network/home";
@@ -47,6 +50,7 @@ export default {
     Fashion,
     TabControl,
     GoodsList,
+    Scroll,
   },
   created() {
     this.getHomeData();
@@ -56,6 +60,12 @@ export default {
     this.getGoodsData("new");
 
     this.getGoodsData("sell");
+  },
+  mouted() {
+    //监听图片加载
+    this.$bus.$on("itemImgLOad", () => {
+      this.$refs.scroll.refresh();
+    });
   },
   methods: {
     //获取home的主要数据
@@ -72,6 +82,10 @@ export default {
         this.goods[type].list.push(...res.data.list);
         this.goods[type].page + 1;
       });
+    },
+    loadMore() {
+      this.getGoodsData(this.currentType);
+      this.$refs.scroll.scrollTo();
     },
     tabClick(index) {
       switch (index) {
@@ -98,7 +112,8 @@ export default {
 <style  scoped>
 #home {
   padding-top: 44px;
-  /* position: relative; */
+  height: 100vh;
+  position: relative;
 }
 
 #home-slot {
@@ -115,5 +130,13 @@ export default {
   position: sticky;
   top: 44px;
   z-index: 9;
+}
+.scroll {
+  position: absolute;
+  top: 44px;
+  bottom: 49px;
+  right: 0;
+  left: 0;
+  overflow: hidden;
 }
 </style>
